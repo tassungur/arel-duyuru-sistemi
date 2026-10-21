@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "description": "Birim Bazlı Şablon Yetkilendirme ve Kanal İzin Matrisi (Sunum Sayfa 5, 9 ve 19)",
+  "roles": {
+    "SuperAdmin": {
+      "description": "Sistem Yöneticisi ve Kurumsal İletişim Direktörlüğü",
+      "canApprove": true,
+      "canManageVisualLibrary": true,
+      "canSendEmergencyPush": true,
+      "allowedUnits": ["*"]
+    },
+    "CommOfficeApprover": {
+      "description": "İletişim Ofisi Kontrol ve Onay Yetkilisi (Sayfa 8)",
+      "canApprove": true,
+      "canRequestRevision": true,
+      "canManageVisualLibrary": true,
+      "canEditLockedBrandFields": false,
+      "allowedUnits": ["*"]
+    },
+    "UnitPublisher": {
+      "description": "Birim Duyuru Hazırlama Yetkilisi (İK, Kariyer Merkezi, Öğrenci İşleri, Fakülteler)",
+      "canApprove": false,
+      "canSubmitForReview": true,
+      "canPreviewDesktopMobilePush": true,
+      "canEditLockedBrandFields": false,
+      "allowedUnits": ["ASSIGNED_UNIT_ONLY"]
+    },
+    "RectorateEmergencyPublisher": {
+      "description": "Rektörlük ve İSG Kritik/Acil Duyuru Yetkilisi (Sayfa 18)",
+      "canSubmitForReview": true,
+      "canSelectUrgentPriority": true,
+      "canSendHighPriorityPush": true,
+      "allowedUnits": ["rektorluk", "isg"]
+    },
+    "HRSystemCron": {
+      "description": "İK Otomatik Doğum Günü Kutlama Servisi (Sayfa 22)",
+      "canTriggerAutomatedBirthday": true,
+      "bypassManualApproval": true,
+      "allowedTemplates": ["ik-dogum-gunu"]
+    }
+  },
+  "unitTemplatePermissions": {
+    "ik": ["ik-hosgeldiniz", "ik-terfi", "ik-kurum-ici", "ik-kiyafet", "ik-egitim", "ik-dogum-gunu"],
+    "kariyer": ["kariyer-staj", "kariyer-markali-ders", "kariyer-konuk", "kariyer-is-firsatlari"],
+    "rektorluk": ["rektorluk-resmi", "isg-acil"],
+    "isg": ["isg-acil"]
+  }
+}

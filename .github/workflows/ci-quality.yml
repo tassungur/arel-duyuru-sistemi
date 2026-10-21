@@ -1,0 +1,38 @@
+name: Code Quality & Staging Deploy
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  quality-and-deploy:
+    runs-on: [self-hosted, staging]
+    timeout-minutes: 10
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Run Quality & Architecture Gate (PR)
+        if: github.event_name == 'pull_request'
+        run: |
+          docker build --target quality-check \
+            --build-arg COMMIT_SHA=${{ github.sha }} \
+            --add-host=api.staging.arel.edu.tr:host-gateway \
+            -f Dockerfile .
+
+      - name: Build, Inspect & Deploy to Staging (main)
+        if: github.event_name != 'pull_request'
+        run: |
+          docker build -t arel-duyuru-sistemi:staging \
+            --build-arg COMMIT_SHA=${{ github.sha }} \
+            --add-host=api.staging.arel.edu.tr:host-gateway \
+            -f Dockerfile .
+          docker rm -f arel-duyuru-sistemi || true
+          docker run -d --name arel-duyuru-sistemi \
+            --restart unless-stopped \
+            --network arel-cms-net \
+            -p 127.0.0.1:8085:80 \
+            arel-duyuru-sistemi:staging

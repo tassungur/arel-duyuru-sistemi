@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.arel.edu.tr/duyuru/template-catalog.schema.json",
+  "title": "ArelAnnouncementTemplateCatalog",
+  "description": "İstanbul Arel Üniversitesi 8 Ana Duyuru Kategorisi ve Kilitli Kurumsal HTML Şablon Şeması",
+  "type": "object",
+  "required": ["version", "lockedCorporateIdentity", "families", "templates"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0.0" },
+    "lockedCorporateIdentity": {
+      "type": "object",
+      "required": ["fontFamily", "maxWidthPx", "lockedElements", "unitColors"],
+      "properties": {
+        "fontFamily": { "type": "string", "const": "'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, Helvetica, sans-serif" },
+        "maxWidthPx": { "type": "integer", "const": 600 },
+        "lockedElements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["AREL_LOGO", "UNIT_HEADER_BAR", "GOLD_DIVIDER", "CORPORATE_FONT", "UNIT_COLOR_PALETTE", "SOCIAL_FOOTER_BAR"]
+          }
+        },
+        "unitColors": {
+          "type": "object",
+          "properties": {
+            "arelBlue": { "type": "string", "const": "#00539b" },
+            "arelNavy": { "type": "string", "const": "#1e3a5f" },
+            "arelGold": { "type": "string", "const": "#ab8e58" },
+            "hrBurgundy": { "type": "string", "const": "#8a1538" },
+            "ohsDanger": { "type": "string", "const": "#b91c1c" }
+          }
+        }
+      }
+    },
+    "families": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["code", "name", "authorizedUnits"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "FAM_01_CORPORATE_INFO",
+              "FAM_02_EVENT_SEMINAR_TRAINING",
+              "FAM_03_APPLICATION_DEADLINE",
+              "FAM_04_POLICY_REGULATION_REMINDER",
+              "FAM_05_HR_STAFF_NOTICE",
+              "FAM_06_OHS_EMERGENCY_ALERT",
+              "FAM_07_CAREER_INTERNSHIP_JOB",
+              "FAM_08_CELEBRATION_CULTURE_BIRTHDAY"
+            ]
+          },
+          "name": { "type": "string" },
+          "authorizedUnits": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "description": "Kurum İçi Duyuru Yönetim Sistemi — Durum Geçiş Makinesi ve İletişim Ofisi Onay Kuralları (Sunum Sayfa 7 ve 8)",
+  "states": [
+    "DRAFT",
+    "PENDING_COMM_REVIEW",
+    "REVISION_REQUESTED",
+    "REJECTED",
+    "APPROVED",
+    "SCHEDULED",
+    "DISPATCHED"
+  ],
+  "standardRevisionReasons": [
+    { "code": "REV_SPELLING", "label": "Yazım hatası" },
+    { "code": "REV_IMAGE", "label": "Görsel uygun değil" },
+    { "code": "REV_MISSING_INFO", "label": "Eksik bilgi" },
+    { "code": "REV_WRONG_AUDIENCE", "label": "Yanlış hedef kitle" },
+    { "code": "REV_BRAND_VIOLATION", "label": "Kurumsal kimliğe aykırı kullanım" }
+  ],
+  "transitions": [
+    {
+      "from": "DRAFT",
+      "to": "PENDING_COMM_REVIEW",
+      "action": "SUBMIT_FOR_REVIEW",
+      "allowedRoles": ["UnitAuthor", "UnitPublisher"],
+      "triggersPopupTo": "CommOfficeApprover"
+    },
+    {
+      "from": "PENDING_COMM_REVIEW",
+      "to": "APPROVED",
+      "action": "APPROVE_AND_PUBLISH",
+      "allowedRoles": ["CommOfficeApprover", "SuperAdmin"],
+      "dispatchesChannels": ["outlook", "portal", "push"]
+    },
+    {
+      "from": "PENDING_COMM_REVIEW",
+      "to": "REVISION_REQUESTED",
+      "action": "REQUEST_REVISION",
+      "allowedRoles": ["CommOfficeApprover", "SuperAdmin"],
+      "requiresReasonCode": true
+    },
+    {
+      "from": "REVISION_REQUESTED",
+      "to": "PENDING_COMM_REVIEW",
+      "action": "RESUBMIT_FOR_REVIEW",
+      "allowedRoles": ["UnitAuthor", "UnitPublisher"],
+      "triggersPopupTo": "CommOfficeApprover"
+    },
+    {
+      "from": "DRAFT",
+      "to": "DISPATCHED",
+      "action": "AUTOMATED_BIRTHDAY_TRIGGER",
+      "allowedRoles": ["HRSystemCron"],
+      "bypassCommOfficeReview": true
+    }
+  ]
+}

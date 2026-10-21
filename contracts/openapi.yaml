@@ -1,0 +1,54 @@
+openapi: 3.1.0
+info:
+  title: İstanbul Arel Üniversitesi — Kurum İçi Duyuru Yönetim Sistemi API Sözleşmesi
+  version: 1.0.0
+  description: >
+    Outlook HTML E-Posta, Kurum İçi Portal ve Mobil Push Notification kanallarını,
+    birim bazlı yetkilendirme (RBAC) ve İletişim Ofisi Pop-up Onay süreciyle yöneten
+    bağlayıcı REST API sözleşmesi.
+servers:
+  - url: https://api.staging.arel.edu.tr/api/v1/announcements
+    description: Staging Sunucusu
+paths:
+  /templates:
+    get:
+      summary: Aktif birimin yetkili olduğu kilitli kurumsal HTML şablonlarını listeler
+      parameters:
+        - name: X-Tenant-Code
+          in: header
+          required: true
+          schema:
+            type: string
+            enum: [ik, kariyer, rektorluk, isg, iletisim, ogrenci]
+      responses:
+        '200':
+          description: Birim şablon listesi ve onaylı görsel kütüphanesi
+  /submissions:
+    get:
+      summary: İletişim Ofisi onay kuyruğundaki veya birimin kendi duyurularını listeler
+      responses:
+        '200':
+          description: Duyuru listesi
+    post:
+      summary: Birim tarafından hazırlanan duyuruyu İletişim Ofisi ekranına pop-up bildirim olarak düşürür
+      responses:
+        '201':
+          description: Duyuru PENDING_COMM_REVIEW durumuna alındı ve İletişim Ofisi pop-up bildirimi tetiklendi
+  /submissions/{submissionId}/decision:
+    post:
+      summary: İletişim Ofisi tarafından duyurunun onaylanması (Outlook + Portal + Push yayını) veya 5 standart nedenle revizyona gönderilmesi
+      parameters:
+        - name: submissionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Karar uygulandı ve seçili kanallara gönderim başlatıldı
+  /automation/hr-birthday-dispatch:
+    post:
+      summary: İK veritabanından günlük otomatik doğum günü kutlama e-postası ve mobil push bildirimi tetikler (Sayfa 22)
+      responses:
+        '200':
+          description: Günlük doğum günü kutlamaları ilgili personellere iletildi

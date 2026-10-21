@@ -1,0 +1,28 @@
+{
+  "name": "arel-duyuru-sistemi",
+  "private": true,
+  "version": "1.0.0",
+  "description": "İstanbul Arel Üniversitesi — Kurum İçi Duyuru Yönetim Sistemi (HTML Şablon, Portal, Outlook & Mobil Push Kontrol Deposu)",
+  "type": "module",
+  "scripts": {
+    "prepare": "node scripts/devkit-sync.mjs --init || true",
+    "dev": "node scripts/devkit-sync.mjs --sync-quiet && vite",
+    "build": "node scripts/devkit-sync.mjs --sync-quiet && tsc -b && vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "node scripts/arch-check.mjs",
+    "test": "node scripts/arch-check.mjs"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "~5.7.2",
+    "vite": "^6.0.5"
+  }
+}
